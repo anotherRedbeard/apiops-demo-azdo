@@ -214,8 +214,10 @@ stages:
 
                 Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
                 $cloneUrl = "https://github.com/$githubRepoOwner/$githubRepoName.git"
-                Write-Information "Clone URL is $cloneUrl"
-                git clone --branch "$sourceBranch" --depth 1 "$cloneUrl" "$temporaryFolderPath"
+                $cloneUrlWithCreds = "https://$githubToken@$githubRepoOwner:$githubRepoName.git"
+
+                Write-Information "Clone URL is $cloneUrlWithCreds"
+                git clone --branch "$sourceBranch" --depth 1 "$cloneUrlWithCreds" "$temporaryFolderPath"
                 if ($LASTEXITCODE -ne 0) { throw "Cloning branch $sourceBranch in repository $githubRepoName failed." }
 
                 Write-Information "Creating temporary branch from $sourceBranch..."
