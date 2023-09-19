@@ -219,7 +219,7 @@ stages:
                 if ($LASTEXITCODE -ne 0) { throw "Cloning branch $sourceBranch in repository $githubRepoName failed." }
 
                 Write-Information "Creating temporary branch from $sourceBranch..."
-                git -C "$temporaryFolderPath" checkout -b "$temporaryBranchName" "$sourceBranch"
+                git -C "$temporaryFolderPath" checkout -b "$targetBranch" "$sourceBranch"
                 if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $sourceBranch failed." }
 
                 Write-Information "Creating artifacts folder..."
