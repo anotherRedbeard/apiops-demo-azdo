@@ -202,7 +202,7 @@ stages:
                 # GitHub repository and token details
                 $githubRepoOwner = "${{ parameters.GITHUB_OWNER }}"
                 $githubRepoName = "${{ parameters.APIM_REPOSITORY_NAME }}"
-                $githubToken = "${env:GITHUB_PAT}"
+                $githubToken = "$(GITHUB_PAT)"
 
                 # The source and target branches for the pull request
                 $sourceBranch = "${{ parameters.TARGET_BRANCH_NAME }}"
@@ -292,5 +292,3 @@ stages:
                 Write-Information "Execution complete."
 
               pwsh: true
-            env:
-              GITHUB_PAT: "$(GITHUB_PAT)"
