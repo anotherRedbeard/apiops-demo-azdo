@@ -210,7 +210,7 @@ stages:
 
                 # Create a temporary folder
                 $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-portal"
-                New-Item -Path "$temporaryFolderPath" -ItemType "Directory"
+                New-Item -Path $temporaryFolderPath -ItemType "Directory"
 
                 Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
                 $cloneUrl = "https://github.com/$githubRepoOwner/$githubRepoName.git"
