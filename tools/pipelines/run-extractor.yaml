@@ -26,6 +26,10 @@ parameters:
     values:
       - Extract All
       - configuration.extractor.yaml
+  - name: GITHUB_OWNER
+    type: string
+    displayName: Github Owner Name
+    default: anotherRedbeard
   - name: API_SPECIFICATION_FORMAT
     type: string
     displayName: API Specification Format
@@ -195,26 +199,28 @@ stages:
                 $VerbosePreference = "Continue"
                 $InformationPreference = "Continue"
 
-                Write-Information "Installing Azure DevOps extension..."
-                az extension add --name "azure-devops"
-                az devops configure --defaults organization="$(System.TeamFoundationCollectionUri)" project="$(System.TeamProject)"
+                # GitHub repository and token details
+                $githubRepoOwner = "${{ parameters.GITHUB_OWNER }}"
+                $githubRepoName = "${{ parameters.APIM_REPOSITORY_NAME }}"
+                $githubToken = "$(GITHUB_PAT)"
 
-                Write-Information "Creating temporary folder..."
+                # The source and target branches for the pull request
+                $sourceBranch = "${{ parameters.TARGET_BRANCH_NAME }}"
+                $targetBranch = "artifacts-from-portal-build-$(Build.BuildId)""
+
+                # Create a temporary folder
                 $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-portal"
                 New-Item -Path "$temporaryFolderPath" -ItemType "Directory"
 
-                $branchName = "${{ parameters.TARGET_BRANCH_NAME }}"
-                $temporaryBranchName = "artifacts-from-portal-build-$(Build.BuildId)"
-                $repositoryName = "${{ parameters.APIM_REPOSITORY_NAME }}"
-                Write-Information "Cloning branch $branchName in repository $repositoryName..."
-                $cloneUrl = az repos show --repository "$repositoryName" --query "remoteUrl" --output tsv
+                Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
+                $cloneUrl = "https://github.com/$githubRepoOwner/$githubRepoName.git"
                 Write-Information "Clone URL is $cloneUrl"
-                git -c http.extraheader="AUTHORIZATION: Bearer $(System.AccessToken)" clone --branch "$branchName" --depth 1 "$cloneUrl" "$temporaryFolderPath"
-                if ($LASTEXITCODE -ne 0) { throw "Cloning branch $branchName in repository $repositoryName failed." }
+                git clone --branch "$sourceBranch" --depth 1 "$cloneUrl" "$temporaryFolderPath"
+                if ($LASTEXITCODE -ne 0) { throw "Cloning branch $sourceBranch in repository $githubRepoName failed." }
 
-                Write-Information "Creating temporary branch $temporaryBranchName from $branchName..."
-                git -C "$temporaryFolderPath" checkout -b "$temporaryBranchName" "$branchName"
-                if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $temporaryBranchName from $branchName failed." }
+                Write-Information "Creating temporary branch from $sourceBranch..."
+                git -C "$temporaryFolderPath" checkout -b "$sourceBranch"
+                if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $sourceBranch failed." }
 
                 Write-Information "Creating artifacts folder..."
                 $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
@@ -240,10 +246,10 @@ stages:
                     Write-Information "No changes exist to be published."
                     return
                 }
-                
+
                 Write-Information "Setting git user information..."
-                git config --global user.email "azuredevopsagent@azuredevops.com"
-                git config --global user.name "Azure Devops agent"
+                git config --global user.email "github-actions@example.com"
+                git config --global user.name "GitHub Actions"
 
                 Write-Information "Adding changes..."
                 git -C "$temporaryFolderPath" add --all
@@ -260,17 +266,28 @@ stages:
                 }
 
                 Write-Information "Pushing changes"
-                git -C "$temporaryFolderPath" -c http.extraheader="AUTHORIZATION: Bearer $(System.AccessToken)" push --set-upstream origin "$temporaryBranchName"
+                git -C "$temporaryFolderPath" push origin "$sourceBranch"
                 if ($LASTEXITCODE -ne 0) { throw "Pushing Git changes failed." }
 
                 Write-Information "Creating pull request..."
-                az repos pr create --source-branch "$temporaryBranchName" --target-branch "$branchName" --title "Merging artifacts from portal (Build $(Build.BuildId))" --squash --delete-source-branch "true" --repository "$repositoryName"
-                if ($LASTEXITCODE -ne 0) { throw "Creating pull request failed." }
+                # Create a pull request using GitHub API
+                $prData = @{
+                    title = "Merging artifacts from portal (Build $(Build.BuildId))"
+                    head = $sourceBranch
+                    base = $targetBranch
+                }
+                $prDataJson = $prData | ConvertTo-Json
+                $headers = @{
+                    "Authorization" = "Bearer $githubToken"
+                    "Content-Type" = "application/json"
+                }
+                $uri = "https://api.github.com/repos/$githubRepoOwner/$githubRepoName/pulls"
+                $response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $prDataJson
+                if ($response.Status -ne "201 Created") { throw "Creating pull request failed." }
 
                 Write-Information "Deleting temporary folder contents..."
                 Remove-Item -Path "$temporaryFolderPath" -Recurse -Force
 
                 Write-Information "Execution complete."
+
               pwsh: true
-            env:
-              AZURE_DEVOPS_EXT_PAT: "$(System.AccessToken)"
