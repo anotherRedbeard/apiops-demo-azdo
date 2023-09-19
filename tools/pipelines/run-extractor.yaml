@@ -1,16 +1,21 @@
 parameters:
+
   - name: APIM_INSTANCE_NAME
     displayName: APIM instance name
     type: string
+    default: red-apim-dev
   - name: RESOURCE_GROUP_NAME
     displayName: APIM instance resource group name
     type: string
+    default: red-scus-apiopsdemo-rg-dev
   - name: APIM_REPOSITORY_NAME
     type: string
     displayName: APIM repository for pull request
+    default: apiops-demo-azdo
   - name: API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH
     type: string
     displayName: Folder where you want to extract the artifacts
+    default: apim-outputs
   - name: TARGET_BRANCH_NAME
     type: string
     displayName: Target branch for pull request
