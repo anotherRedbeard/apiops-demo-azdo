@@ -266,7 +266,8 @@ stages:
                 }
 
                 Write-Information "Pushing changes"
-                git -C "$temporaryFolderPath" push origin "$sourceBranch"
+                git -C "$temporaryFolderPath" -c http.extraheader="AUTHORIZATION: Bearer $githubToken" push --set-upstream origin "$targetBranch"
+
                 if ($LASTEXITCODE -ne 0) { throw "Pushing Git changes failed." }
 
                 Write-Information "Creating pull request..."
