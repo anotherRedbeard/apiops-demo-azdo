@@ -208,9 +208,9 @@ stages:
                 $sourceBranch = "${{ parameters.TARGET_BRANCH_NAME }}"
                 $targetBranch = "artifacts-from-portal-build-$(Build.BuildId)""
 
-                # Create a temporary folder
+                Write-Information "Creating temporary folder..."
                 $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-portal"
-                New-Item -Path $temporaryFolderPath -ItemType "Directory"
+                New-Item -Path "$temporaryFolderPath" -ItemType "Directory"
 
                 Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
                 $cloneUrl = "https://github.com/$githubRepoOwner/$githubRepoName.git"
