@@ -181,7 +181,7 @@ stages:
                 $InformationPreference = "Continue"
 
                 # GitHub repository and token details
-                $githubRepoOwner = "${{ parameters.GITHUB_OWNER }}"
+                $githubRepoOwner = "$(GITHUB_OWNER)"
                 $githubRepoName = "${{ parameters.APIM_REPOSITORY_NAME }}"
                 $githubToken = "$(GITHUB_PAT)"
 
