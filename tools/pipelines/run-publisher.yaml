@@ -10,7 +10,7 @@ parameters:
   - name: API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH
     type: string
     displayName: Folder where the artifacts reside
-    default: "artifacts"
+    default: "apim-outputs"
   - name: COMMIT_ID
     type: string
     displayName: Choose "publish-all-artifacts-in-repo" only when you want to force republishing all artifacts (e.g. after build failure). Otherwise stick with the default behavior of "publish-artifacts-in-last-commit"
