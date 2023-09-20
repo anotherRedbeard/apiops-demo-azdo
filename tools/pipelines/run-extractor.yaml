@@ -276,11 +276,12 @@ stages:
                 # Create a pull request using GitHub API
                 $prData = @{
                     title = "Merging artifacts from portal (Build $(Build.BuildId))"
-                    head = $sourceBranch
-                    base = $targetBranch
+                    head = $targetBranch
+                    base = $sourceBranch
                 }
                 $prDataJson = $prData | ConvertTo-Json
                 $headers = @{
+                    "Accept" = "application/vnd.github+json"
                     "Authorization" = "Bearer $githubToken"
                     "Content-Type" = "application/json"
                 }
