@@ -48,6 +48,7 @@ stages:
         variables:
           #setting the testSecretValue to the prod resource group name as an example
           testSecretValue: $(RESOURCE_GROUP_NAME_Prod)
+          appInsightsLoggerKey: $(Appinsights_Logger_Key)
         pool:
           vmImage: ubuntu-latest
         # creates an environment if it doesn't exist

@@ -1,0 +1,48 @@
+apimServiceName: red-apim-prd
+namedValues:
+  - name: environment
+    properties:
+      displayName: environment
+      value: https://www.bing.com
+  - name: demo
+    properties:
+      displayName: demo
+      value: demo message new again again
+  - name: TimeNow
+    properties:
+      displayName: TimeNow
+      value: "@(DateTime2.Now.ToString())"
+  - name: testSecret
+    properties:
+      displayName: testSecret
+      value: "{#testSecretValue#}"
+  - name: signingKey
+    properties:
+      displayName: signingKey
+      keyVault: 
+        secretIdentifier: https://red-scus-apimdemo-kv-prd.vault.azure.net/secrets/APIM-signing-key
+  - name: 639121f85ddd1701d02ea23f
+    properties:
+      displayName: Logger-Credentials--639121f85ddd1701d02ea240
+      value: "{#appInsightsLoggerKey#}"
+loggers:
+    - name: red-scus-apim-ai-dev
+      properties:
+        loggerType: applicationInsights
+        description: App insights logger info
+        resourceId: "/subscriptions/8308f340-4d69-4343-a5af-5437a6121b15/resourceGroups/red-scus-apiopsdemo-rg-prd/providers/microsoft.insights/components/red-scus-apim-ai-prd"
+        credentials:
+          instrumentationKey: "{{Logger-Credentials--639121f85ddd1701d02ea240}}"
+        isBuffered: true
+diagnostics:
+    - name: applicationinsights
+      properties:
+        verbosity: Error
+        loggerId: "/subscriptions/8308f340-4d69-4343-a5af-5437a6121b15/resourceGroups/red-scus-apiopsdemo-rg-dev/providers/Microsoft.ApiManagement/service/red-apim-dev/loggers/red-scus-apim-ai-dev"
+apis:
+  - name: "basic-calculator"
+    diagnostics:
+      - name: applicationinsights
+        properties:
+          verbosity: Error
+          loggerId: "/subscriptions/8308f340-4d69-4343-a5af-5437a6121b15/resourceGroups/red-scus-apiopsdemo-rg-dev/providers/Microsoft.ApiManagement/service/red-apim-dev/loggers/red-scus-apim-ai-dev"
