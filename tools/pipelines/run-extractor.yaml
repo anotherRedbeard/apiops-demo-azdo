@@ -214,7 +214,7 @@ stages:
 
                 Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
                 $cloneUrl = "https://github.com/$githubRepoOwner/$githubRepoName.git"
-                $cloneUrlWithCreds = "https://github.com/$githubToken@$githubRepoOwner/$githubRepoName.git"
+                $cloneUrlWithCreds = "https://oauth2:$githubToken@github.com/$githubRepoOwner/$githubRepoName.git"
 
                 Write-Information "Clone URL is $cloneUrlWithCreds"
                 git clone --branch "$sourceBranch" --depth 1 "$cloneUrlWithCreds" "$temporaryFolderPath"
