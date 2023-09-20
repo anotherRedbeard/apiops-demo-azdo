@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Basic Calculator Api
-  description: 'Arithmetics new sherrif in town, gh! Try again.'
+  description: 'Arithmetics, test deploy'
   version: '1.0'
 servers:
   - url: https://red-apim-dev.azure-api.net/calc
