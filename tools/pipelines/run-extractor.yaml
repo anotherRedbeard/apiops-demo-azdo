@@ -27,10 +27,6 @@ parameters:
       - Extract All
       - configuration.extractor.yaml
     default: Extract All
-  - name: GITHUB_OWNER
-    type: string
-    displayName: Github Owner Name
-    default: anotherRedbeard
   - name: API_SPECIFICATION_FORMAT
     type: string
     displayName: API Specification Format
