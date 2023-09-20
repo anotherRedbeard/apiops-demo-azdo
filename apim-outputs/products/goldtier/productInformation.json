@@ -1,0 +1,11 @@
+{
+  "properties": {
+    "approvalRequired": true,
+    "description": "This is the gold tier product",
+    "displayName": "GoldTier",
+    "state": "notPublished",
+    "subscriptionRequired": true,
+    "subscriptionsLimit": 5,
+    "terms": "This is where you would put the legal terms of your product"
+  }
+}
