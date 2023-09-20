@@ -1,0 +1,15 @@
+{
+  "properties": {
+    "credentials": {
+      "header": {},
+      "query": {}
+    },
+    "description": "Testing out a custom backend",
+    "protocol": "http",
+    "tls": {
+      "validateCertificateChain": true,
+      "validateCertificateName": true
+    },
+    "url": "https://google.com"
+  }
+}
