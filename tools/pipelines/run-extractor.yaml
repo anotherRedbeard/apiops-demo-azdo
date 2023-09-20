@@ -286,9 +286,9 @@ stages:
                     "Content-Type" = "application/json"
                 }
                 $uri = "https://api.github.com/repos/$githubRepoOwner/$githubRepoName/pulls"
-                $response = Invoke-RestMethod -Uri $uri -Method Post -Headers $headers -Body $prDataJson
+                $response = Invoke-WebRequest -Uri $uri -Method Post -Headers $headers -Body $prDataJson
                 echo $response
-                if ($response.Status -ne "201 Created") { throw "Creating pull request failed." }
+                if ($response.StatusCode -ne "201 Created") { throw "Creating pull request failed." }
 
                 Write-Information "Deleting temporary folder contents..."
                 Remove-Item -Path "$temporaryFolderPath" -Recurse -Force
