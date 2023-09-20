@@ -41,6 +41,8 @@ parameters:
       - OpenAPIV2Json
     default: OpenAPIV3Yaml
 
+pr: none
+
 trigger: none
 
 variables:
