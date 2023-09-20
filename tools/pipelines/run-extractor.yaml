@@ -145,20 +145,7 @@ stages:
               API_SPECIFICATION_FORMAT: ${{ parameters.API_SPECIFICATION_FORMAT }}
               ${{ if ne( parameters['CONFIGURATION_YAML_PATH'], 'Extract All' ) }}:
                 CONFIGURATION_YAML_PATH: ${{ parameters.CONFIGURATION_YAML_PATH }}
-          #Running Super Linting Tool on the API(s) - START
-          - task: NodeTool@0
-            inputs:
-              versionSpec: '12.x'
-            displayName: 'Install Node.js'
-        
-          - task: PublishTestResults@2
-            inputs:
-              testResultsFormat: 'JUnit'
-              testResultsFiles: '**/spectral-result.xml'
-              searchFolder: $(Build.ArtifactStagingDirectory)
-              testRunTitle: 'Linting results for API $(Build.SourceBranchName)'
-              failTaskOnFailedTests: false
-          #Running Super Linting Tool on the API(s) - END
+
           - task: PublishPipelineArtifact@1
             displayName: Publish pipeline artifact
             inputs:
