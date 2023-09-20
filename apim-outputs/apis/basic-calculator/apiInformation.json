@@ -3,7 +3,7 @@
     "apiRevision": "1",
     "apiRevisionDescription": "remove ip",
     "authenticationSettings": {},
-    "description": "Arithmetics new sherrif in town",
+    "description": "Arithmetics new sherrif in town, gh!",
     "displayName": "Basic Calculator Api",
     "isCurrent": true,
     "path": "calc",
