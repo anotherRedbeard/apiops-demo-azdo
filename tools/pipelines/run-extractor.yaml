@@ -26,6 +26,7 @@ parameters:
     values:
       - Extract All
       - configuration.extractor.yaml
+    default: Extract All
   - name: GITHUB_OWNER
     type: string
     displayName: Github Owner Name
