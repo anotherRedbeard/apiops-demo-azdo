@@ -1,0 +1,58 @@
+openapi: 3.0.1
+info:
+  title: Star Wars API
+  description: Star wars api endpoing
+  version: v1
+servers:
+  - url: https://red-apim-dev.azure-api.net/sw/v1
+paths:
+  /people/:
+    get:
+      summary: GetPeople
+      description: GetPeople
+      operationId: getpeople
+      responses:
+        '200':
+          description: ''
+  '/people/{id}/':
+    get:
+      summary: GetPeopleById
+      description: GetPeopleById
+      operationId: getpeoplebyid
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema:
+            type: ''
+      responses:
+        '200':
+          description: ''
+  /films:
+    get:
+      summary: GetFilm
+      description: GetFilm
+      operationId: getfilm
+      responses:
+        '200':
+          description: ''
+          content:
+            application/json:
+              example:
+                count: 1
+                films:
+                  - title: A New Hope
+                    release-date: '1977-05-25T05:00:00.0000000+00:00'
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]
