@@ -1,9 +1,0 @@
-{
-  "properties": {
-    "displayName": "testSecret",
-    "secret": true,
-    "tags": [
-      "newtag"
-    ]
-  }
-}
