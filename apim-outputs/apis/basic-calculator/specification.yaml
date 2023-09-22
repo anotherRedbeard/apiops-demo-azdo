@@ -1,0 +1,46 @@
+openapi: 3.0.1
+info:
+  title: Basic Calculator Api
+  description: Math is fun!
+  version: '1.0'
+servers:
+  - url: https://red-apim-dev.azure-api.net/calc
+paths:
+  /add:
+    get:
+      summary: Add two integers
+      description: Produces a sum of two numbers.
+      operationId: 6271447a463461115ced7755
+      parameters:
+        - name: a
+          in: query
+          description: First operand. Default value is <code>51</code>.
+          required: true
+          schema:
+            enum:
+              - '51'
+            type: string
+        - name: b
+          in: query
+          description: Second operand. Default value is <code>49</code>.
+          required: true
+          schema:
+            enum:
+              - '49'
+            type: string
+      responses:
+        '200':
+          description: ''
+components:
+  securitySchemes:
+    apiKeyHeader:
+      type: apiKey
+      name: Ocp-Apim-Subscription-Key
+      in: header
+    apiKeyQuery:
+      type: apiKey
+      name: subscription-key
+      in: query
+security:
+  - apiKeyHeader: [ ]
+  - apiKeyQuery: [ ]
