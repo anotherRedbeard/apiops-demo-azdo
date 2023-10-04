@@ -30,9 +30,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 type: array
@@ -94,9 +92,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -117,9 +113,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -151,9 +145,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -190,9 +182,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -213,9 +203,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -240,9 +228,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -306,9 +292,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -329,9 +313,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -371,9 +353,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -394,9 +374,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -436,9 +414,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -459,9 +435,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -494,9 +468,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
@@ -517,9 +489,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ProblemDetails'
@@ -552,9 +522,7 @@ paths:
             text/plain:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
-              examples:
-                default:
-                  value: 
+              example: ''
             application/json:
               schema:
                 $ref: '#/components/schemas/ColorsItem'
