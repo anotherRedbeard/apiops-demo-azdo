@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Basic Calculator Api
-  description: Math is fun! This is a test
+  description: 'Math is fun! '
   version: '1.0'
 servers:
   - url: https://red-apim-dev.azure-api.net/calc
