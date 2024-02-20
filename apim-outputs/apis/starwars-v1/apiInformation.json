@@ -1,0 +1,21 @@
+{
+  "properties": {
+    "apiRevision": "1",
+    "apiVersion": "v1",
+    "apiVersionSetId": "/subscriptions/ac81efbd-2d16-4829-9c4c-228a17db1f32/resourceGroups/brd-scus-apiopsdemo-rg-dev/providers/Microsoft.ApiManagement/service/brd-apim-dev/apiVersionSets/6398be47eb8d2b6560dd061a",
+    "authenticationSettings": {},
+    "description": "Star wars api endpoing",
+    "displayName": "Star Wars API",
+    "isCurrent": true,
+    "path": "sw",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "https://swapi.dev/api",
+    "subscriptionKeyParameterNames": {
+      "header": "Ocp-Apim-Subscription-Key",
+      "query": "subscription-key"
+    },
+    "subscriptionRequired": true
+  }
+}

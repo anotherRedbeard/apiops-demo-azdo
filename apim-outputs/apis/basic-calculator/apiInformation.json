@@ -1,0 +1,20 @@
+{
+  "properties": {
+    "apiRevision": "1",
+    "apiRevisionDescription": "remove ip",
+    "authenticationSettings": {},
+    "description": "Math is fun! testing url change",
+    "displayName": "Basic Calculator Api",
+    "isCurrent": true,
+    "path": "calc",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "http://calcapi.cloudapp.net/api/v2",
+    "subscriptionKeyParameterNames": {
+      "header": "Ocp-Apim-Subscription-Key",
+      "query": "subscription-key"
+    },
+    "subscriptionRequired": true
+  }
+}

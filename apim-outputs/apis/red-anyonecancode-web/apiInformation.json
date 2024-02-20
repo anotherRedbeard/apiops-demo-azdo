@@ -1,0 +1,19 @@
+{
+  "properties": {
+    "apiRevision": "1",
+    "authenticationSettings": {},
+    "description": "",
+    "displayName": "red-anyonecancode-web",
+    "isCurrent": true,
+    "path": "anyone",
+    "protocols": [
+      "https"
+    ],
+    "serviceUrl": "https://brd-apim-dev.azure-api.net/anyone",
+    "subscriptionKeyParameterNames": {
+      "header": "Ocp-Apim-Subscription-Key",
+      "query": "subscription-key"
+    },
+    "subscriptionRequired": true
+  }
+}

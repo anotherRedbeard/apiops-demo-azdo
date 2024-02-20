@@ -1,0 +1,12 @@
+{
+  "properties": {
+    "displayName": "signingKey",
+    "keyVault": {
+      "secretIdentifier": "https://brd-scus-kv-enterprise.vault.azure.net/secrets/APIM-signing-key"
+    },
+    "secret": true,
+    "tags": [
+      "test"
+    ]
+  }
+}
