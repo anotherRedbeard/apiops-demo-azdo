@@ -1,17 +1,16 @@
 parameters:
-
   - name: APIM_INSTANCE_NAME
     displayName: APIM instance name
     type: string
-    default: red-apim-dev
+    default: brd-apim-dev
   - name: RESOURCE_GROUP_NAME
     displayName: APIM instance resource group name
     type: string
-    default: red-scus-apiopsdemo-rg-dev
+    default: brd-scus-apiopsdemo-rg-dev
   - name: APIM_REPOSITORY_NAME
     type: string
     displayName: APIM repository for pull request
-    default: apiops-demo-azdo
+    default: apiopsvNext
   - name: API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH
     type: string
     displayName: Folder where you want to extract the artifacts
@@ -19,14 +18,13 @@ parameters:
   - name: TARGET_BRANCH_NAME
     type: string
     displayName: Target branch for pull request
-    default: main
+    default: master
   - name: CONFIGURATION_YAML_PATH
     type: string
     displayName: Optional configuration file
     values:
       - Extract All
       - configuration.extractor.yaml
-    default: Extract All
   - name: API_SPECIFICATION_FORMAT
     type: string
     displayName: API Specification Format
@@ -35,9 +33,6 @@ parameters:
       - OpenAPIV3Json
       - OpenAPIV2Yaml
       - OpenAPIV2Json
-    default: OpenAPIV3Yaml
-
-pr: none
 
 trigger: none
 
@@ -145,7 +140,30 @@ stages:
               API_SPECIFICATION_FORMAT: ${{ parameters.API_SPECIFICATION_FORMAT }}
               ${{ if ne( parameters['CONFIGURATION_YAML_PATH'], 'Extract All' ) }}:
                 CONFIGURATION_YAML_PATH: ${{ parameters.CONFIGURATION_YAML_PATH }}
+          #Running Super Linting Tool on the API(s) - START
+          - task: NodeTool@0
+            inputs:
+              versionSpec: '12.x'
+            displayName: 'Install Node.js'
 
+          - script: |
+              npm install -g @stoplight/spectral-cli
+            displayName: 'Install Spectral'
+
+          - script: |
+              spectral lint --format stylish --format junit --output.junit $(Build.ArtifactStagingDirectory)/spectral-result.xml $(Build.ArtifactStagingDirectory)/${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}/apis/**/specification.{json,yaml,yml} -r https://raw.githubusercontent.com/connectedcircuits/devops-api-linter/main/rules.yaml
+            displayName: 'Run Spectral Linting'
+            continueOnError: true
+            failOnStderr: true
+          
+          - task: PublishTestResults@2
+            inputs:
+              testResultsFormat: 'JUnit'
+              testResultsFiles: '**/spectral-result.xml'
+              searchFolder: $(Build.ArtifactStagingDirectory)
+              testRunTitle: 'Linting results for API $(Build.SourceBranchName)'
+              failTaskOnFailedTests: false
+          #Running Super Linting Tool on the API(s) - END
           - task: PublishPipelineArtifact@1
             displayName: Publish pipeline artifact
             inputs:
@@ -176,29 +194,26 @@ stages:
                 $VerbosePreference = "Continue"
                 $InformationPreference = "Continue"
 
-                # GitHub repository and token details
-                $githubRepoOwner = "$(GITHUB_OWNER)"
-                $githubRepoName = "${{ parameters.APIM_REPOSITORY_NAME }}"
-                $githubToken = "$(GITHUB_PAT)"
-
-                # The source and target branches for the pull request
-                $sourceBranch = "${{ parameters.TARGET_BRANCH_NAME }}"
-                $targetBranch = "artifacts-from-portal-build-$(Build.BuildId)"
+                Write-Information "Installing Azure DevOps extension..."
+                az extension add --name "azure-devops"
+                az devops configure --defaults organization="$(System.TeamFoundationCollectionUri)" project="$(System.TeamProject)"
 
                 Write-Information "Creating temporary folder..."
                 $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-portal"
                 New-Item -Path "$temporaryFolderPath" -ItemType "Directory"
 
-                Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
-                $cloneUrlWithCreds = "https://oauth2:$githubToken@github.com/$githubRepoOwner/$githubRepoName.git"
+                $branchName = "${{ parameters.TARGET_BRANCH_NAME }}"
+                $temporaryBranchName = "artifacts-from-portal-build-$(Build.BuildId)"
+                $repositoryName = "${{ parameters.APIM_REPOSITORY_NAME }}"
+                Write-Information "Cloning branch $branchName in repository $repositoryName..."
+                $cloneUrl = az repos show --repository "$repositoryName" --query "remoteUrl" --output tsv
+                Write-Information "Clone URL is $cloneUrl"
+                git -c http.extraheader="AUTHORIZATION: Bearer $(System.AccessToken)" clone --branch "$branchName" --depth 1 "$cloneUrl" "$temporaryFolderPath"
+                if ($LASTEXITCODE -ne 0) { throw "Cloning branch $branchName in repository $repositoryName failed." }
 
-                Write-Information "Clone URL is $cloneUrlWithCreds"
-                git clone --branch "$sourceBranch" --depth 1 "$cloneUrlWithCreds" "$temporaryFolderPath"
-                if ($LASTEXITCODE -ne 0) { throw "Cloning branch $sourceBranch in repository $githubRepoName failed." }
-
-                Write-Information "Creating temporary branch from $sourceBranch..."
-                git -C "$temporaryFolderPath" checkout -b "$targetBranch" "$sourceBranch"
-                if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $sourceBranch failed." }
+                Write-Information "Creating temporary branch $temporaryBranchName from $branchName..."
+                git -C "$temporaryFolderPath" checkout -b "$temporaryBranchName" "$branchName"
+                if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $temporaryBranchName from $branchName failed." }
 
                 Write-Information "Creating artifacts folder..."
                 $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
@@ -224,10 +239,10 @@ stages:
                     Write-Information "No changes exist to be published."
                     return
                 }
-
+                
                 Write-Information "Setting git user information..."
-                git config --global user.email "github-actions@example.com"
-                git config --global user.name "GitHub Actions"
+                git config --global user.email "azuredevopsagent@azuredevops.com"
+                git config --global user.name "Azure Devops agent"
 
                 Write-Information "Adding changes..."
                 git -C "$temporaryFolderPath" add --all
@@ -244,30 +259,17 @@ stages:
                 }
 
                 Write-Information "Pushing changes"
-                git -C "$temporaryFolderPath" push --set-upstream origin "$targetBranch"
-
+                git -C "$temporaryFolderPath" -c http.extraheader="AUTHORIZATION: Bearer $(System.AccessToken)" push --set-upstream origin "$temporaryBranchName"
                 if ($LASTEXITCODE -ne 0) { throw "Pushing Git changes failed." }
 
                 Write-Information "Creating pull request..."
-                # Create a pull request using GitHub API
-                $prData = @{
-                    title = "Merging artifacts from portal (Build $(Build.BuildId))"
-                    head = $targetBranch
-                    base = $sourceBranch
-                }
-                $prDataJson = $prData | ConvertTo-Json
-                $headers = @{
-                    "Accept" = "application/vnd.github+json"
-                    "Authorization" = "Bearer $githubToken"
-                    "Content-Type" = "application/json"
-                }
-                $uri = "https://api.github.com/repos/$githubRepoOwner/$githubRepoName/pulls"
-                $response = Invoke-WebRequest -Uri $uri -Method Post -Headers $headers -Body $prDataJson
-                if ($response.StatusCode -ne "201") { throw "Creating pull request failed." }
+                az repos pr create --source-branch "$temporaryBranchName" --target-branch "$branchName" --title "Merging artifacts from portal (Build $(Build.BuildId))" --squash --delete-source-branch "true" --repository "$repositoryName"
+                if ($LASTEXITCODE -ne 0) { throw "Creating pull request failed." }
 
                 Write-Information "Deleting temporary folder contents..."
                 Remove-Item -Path "$temporaryFolderPath" -Recurse -Force
 
                 Write-Information "Execution complete."
-
               pwsh: true
+            env:
+              AZURE_DEVOPS_EXT_PAT: "$(System.AccessToken)"
