@@ -1,10 +1,10 @@
 openapi: 3.0.1
 info:
   title: Basic Calculator Api
-  description: 'Math is fun! '
+  description: Math is fun! testing url change
   version: '1.0'
 servers:
-  - url: https://red-apim-dev.azure-api.net/calc
+  - url: https://brd-apim-dev.azure-api.net/calc
 paths:
   /add:
     get:
@@ -28,6 +28,14 @@ paths:
             enum:
               - '49'
             type: string
+      responses:
+        '200':
+          description: ''
+  /minus:
+    get:
+      summary: minus
+      description: this is substraction
+      operationId: minus
       responses:
         '200':
           description: ''

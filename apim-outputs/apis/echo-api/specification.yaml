@@ -3,7 +3,7 @@ info:
   title: The Echo API
   version: '1.0'
 servers:
-  - url: https://red-apim-dev.azure-api.net/echo
+  - url: https://brd-apim-dev.azure-api.net/echo
 paths:
   /resource:
     get:

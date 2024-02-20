@@ -11,7 +11,7 @@ info:
     url: https://github.com/markharrison/ColorsAPI/blob/master/LICENSE
   version: '1.0'
 servers:
-  - url: https://red-apim-dev.azure-api.net/color
+  - url: https://brd-apim-dev.azure-api.net/color
 paths:
   /colors:
     get:

@@ -4,7 +4,7 @@ info:
   description: Star wars api endpoing
   version: v1
 servers:
-  - url: https://red-apim-dev.azure-api.net/sw/v1
+  - url: https://brd-apim-dev.azure-api.net/sw/v1
 paths:
   /people/:
     get:

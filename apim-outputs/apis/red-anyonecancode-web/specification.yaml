@@ -4,7 +4,7 @@ info:
   description: ''
   version: '1.0'
 servers:
-  - url: https://red-apim-dev.azure-api.net/anyone
+  - url: https://brd-apim-dev.azure-api.net/anyone
 paths:
   /*:
     delete:

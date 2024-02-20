@@ -9,7 +9,7 @@
     "protocols": [
       "https"
     ],
-    "serviceUrl": "https://red-apim-dev.azure-api.net/echo",
+    "serviceUrl": "http://echoapi.cloudapp.net/api/v123",
     "subscriptionKeyParameterNames": {
       "header": "Ocp-Apim-Subscription-Key",
       "query": "subscription-key"

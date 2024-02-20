@@ -13,6 +13,7 @@
 		<cors allow-credentials="true">
 			<allowed-origins>
 				<origin>https://red-apim-dev.developer.azure-api.net</origin>
+				<origin>https://brd-apim-dev.developer.azure-api.net</origin>
 			</allowed-origins>
 			<allowed-methods preflight-result-max-age="300">
 				<method>*</method>

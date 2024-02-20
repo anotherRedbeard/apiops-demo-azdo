@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Mark Harrison Colors API
-  description: Colors API
+  description: Colors API this one doesn't work
   termsOfService: https://github.com/markharrison/ColorsAPI/blob/master/LICENSE
   contact:
     name: Mark Harrison
@@ -12,7 +12,7 @@ info:
     url: https://github.com/markharrison/ColorsAPI/blob/master/LICENSE
   version: '1.0'
 servers:
-  - url: https://red-apim-dev.azure-api.net
+  - url: https://brd-apim-dev.azure-api.net
 paths:
   /colors:
     get:

@@ -9,7 +9,7 @@
     "protocols": [
       "https"
     ],
-    "serviceUrl": "https://red-apim-dev.azure-api.net/anyone",
+    "serviceUrl": "https://brd-apim-dev.azure-api.net/anyone",
     "subscriptionKeyParameterNames": {
       "header": "Ocp-Apim-Subscription-Key",
       "query": "subscription-key"
