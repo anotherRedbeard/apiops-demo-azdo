@@ -20,8 +20,8 @@ parameters:
     displayName: Folder where the artifacts reside
     default: devportal-artifacts
 
-jobs:
-- job: release_dev
+stages:
+- stage: release_dev
   displayName: 'Release to Dev'
   pool:
     vmImage: 'ubuntu-latest'
@@ -31,18 +31,21 @@ jobs:
       ENVIRONMENT: 'Dev'
       OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
 
-  - deployment: release_prod
-    displayName: 'Release to Prod'
-    dependsOn: release_dev
-    pool:
-      vmImage: 'ubuntu-latest'
-    environment: 'Prod'
-    strategy:
-      # default deployment strategy, more coming...
-      runOnce:
-        deploy:
-          steps:
-          - template: ./run-release-with-env.yaml
-            parameters:
-              ENVIRONMENT: 'Prod'
-              OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
+- stage: release_prod
+  displayName: 'Release to Prod'
+  jobs:
+    - deployment: push_changes_to_Prod
+      displayName: 'Push changes to Prod'
+      dependsOn: release_dev
+      pool:
+        vmImage: 'ubuntu-latest'
+      environment: 'Prod'
+      strategy:
+        # default deployment strategy, more coming...
+        runOnce:
+          deploy:
+            steps:
+            - template: ./run-release-with-env.yaml
+              parameters:
+                ENVIRONMENT: 'Prod'
+                OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
