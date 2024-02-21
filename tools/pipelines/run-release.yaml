@@ -26,7 +26,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - template: ./run-release-with-env.yaml
+  - template: ./run-release-with-env.yml
     parameters:
       ENVIRONMENT: 'Dev'
       OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
@@ -37,7 +37,7 @@ jobs:
   pool:
     vmImage: 'ubuntu-latest'
   steps:
-  - template: ./run-release-with-env.yaml
+  - template: ./run-release-with-env.yml
     parameters:
       ENVIRONMENT: 'Prod'
       OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
