@@ -16,6 +16,10 @@ parameters:
     type: string
     displayName: APIM repository for pull request
     default: apiops-demo-azdo
+  - name: TARGET_BRANCH_NAME
+    type: string
+    displayName: Target branch for pull request
+    default: main
 
 pr: none
 
