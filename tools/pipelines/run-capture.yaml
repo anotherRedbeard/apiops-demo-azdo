@@ -31,7 +31,7 @@ variables:
     value: true
 
 stages:
-  - stage: create-artifact-from-dev-portal
+  - stage: create_artifact_from_dev_portal
     displayName: Create artifact from dev portal
     jobs:
       - job: create_artifact_from_dev_portal
