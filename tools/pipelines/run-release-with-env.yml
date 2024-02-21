@@ -11,10 +11,6 @@ parameters:
   type: string
   default: 'devportal-artifacts'
 
-job: 
-  displayName: 'Release Environment'
-  pool:
-    vmImage: 'ubuntu-latest'
   environment: ${{ parameters.ENVIRONMENT }}
   steps:
   - task: PowerShell@2
