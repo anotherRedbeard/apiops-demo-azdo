@@ -13,8 +13,6 @@ pr:
   paths:
     include:
       - 'devportal-artifacts/**'
-    types:
-      - closed
 
 jobs:
 - job: release-dev
