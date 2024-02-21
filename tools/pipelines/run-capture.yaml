@@ -52,7 +52,7 @@ stages:
 
           - task: PublishPipelineArtifact@1
             inputs:
-              targetPath: '$(System.DefaultWorkingDirectory)/$(OUTPUT_FOLDER_PATH)'
+              targetPath: '$(System.DefaultWorkingDirectory)/${{ parameters.OUTPUT_FOLDER_PATH }}'
               artifact: 'artifacts-from-capture'
 
   # github create PR, you will need to create a GITHUB_OWNER and GITHUB_PAT variable in the pipeline to connect to repo            
