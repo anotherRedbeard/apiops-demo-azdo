@@ -12,6 +12,10 @@ parameters:
     displayName: APIM instance resource group name
     type: string
     default: brd-scus-apiopsdemo-rg-dev
+  - name: APIM_REPOSITORY_NAME
+    type: string
+    displayName: APIM repository for pull request
+    default: apiops-demo-azdo
 
 pr: none
 
