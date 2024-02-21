@@ -87,10 +87,10 @@ stages:
 
                 # The source and target branches for the pull request
                 $sourceBranch = "${{ parameters.TARGET_BRANCH_NAME }}"
-                $targetBranch = "artifacts-from-portal-build-$(Build.BuildId)"
+                $targetBranch = "artifacts-from-capture-build-$(Build.BuildId)"
 
                 Write-Information "Creating temporary folder..."
-                $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-portal"
+                $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-capture"
                 New-Item -Path "$temporaryFolderPath" -ItemType "Directory"
 
                 Write-Information "Cloning branch $sourceBranch in repository $githubRepoName..."
@@ -111,7 +111,7 @@ stages:
                 }
 
                 Write-Information "Synchronizing artifacts..."
-                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.OUTPUT_FOLDER_PATH }}
+                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-capture" ${{ parameters.OUTPUT_FOLDER_PATH }}
                 if ("$(Agent.OS)" -like "*win*") {
                     & robocopy "$extractorArtifactsFolderPath" "$artifactFolderPath" /zb /mir /mt
                     if ($LASTEXITCODE -gt 7) { throw "Setting $artifactFolderPath to contents of $extractorArtifactsFolderPath failed." }
