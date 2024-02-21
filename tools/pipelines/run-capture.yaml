@@ -112,7 +112,7 @@ stages:
 
                 Write-Information "Synchronizing artifacts..."
                 Get-ChildItem -Path (Join-Path "$(Pipeline.Workspace)" -childPath "${{ parameters.OUTPUT_FOLDER_PATH }}") -Recurse
-                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-capture" ${{ parameters.OUTPUT_FOLDER_PATH }}
+                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" ${{ parameters.OUTPUT_FOLDER_PATH }}
                 if ("$(Agent.OS)" -like "*win*") {
                     & robocopy "$extractorArtifactsFolderPath" "$artifactFolderPath" /zb /mir /mt
                     if ($LASTEXITCODE -gt 7) { throw "Setting $artifactFolderPath to contents of $extractorArtifactsFolderPath failed." }
