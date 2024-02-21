@@ -31,18 +31,18 @@ jobs:
       ENVIRONMENT: 'Dev'
       OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
 
-- deployment: release_stage
-  displayName: 'Release to Stage'
-  dependsOn: release_dev
-  pool:
-    vmImage: 'ubuntu-latest'
-  environment: 'Prod'
-  strategy:
-    # default deployment strategy, more coming...
-    runOnce:
-      deploy:
-        steps:
-        - template: ./run-release-with-env.yaml
-          parameters:
-            ENVIRONMENT: 'Prod'
-            OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
+  - deployment: release_prod
+    displayName: 'Release to Prod'
+    dependsOn: release_dev
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: 'Prod'
+    strategy:
+      # default deployment strategy, more coming...
+      runOnce:
+        deploy:
+          steps:
+          - template: ./run-release-with-env.yaml
+            parameters:
+              ENVIRONMENT: 'Prod'
+              OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
