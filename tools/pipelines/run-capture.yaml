@@ -113,13 +113,13 @@ stages:
                 if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $sourceBranch failed." }
 
                 Write-Information "Creating artifacts folder..."
-                $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
+                $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.OUTPUT_FOLDER_PATH }}"
                 if ((Test-Path -Path "$artifactFolderPath") -eq $false) {
                     New-Item -Path "$artifactFolderPath" -ItemType "Directory"
                 }
 
                 Write-Information "Synchronizing artifacts..."
-                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}
+                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.OUTPUT_FOLDER_PATH }}
                 if ("$(Agent.OS)" -like "*win*") {
                     & robocopy "$extractorArtifactsFolderPath" "$artifactFolderPath" /zb /mir /mt
                     if ($LASTEXITCODE -gt 7) { throw "Setting $artifactFolderPath to contents of $extractorArtifactsFolderPath failed." }
@@ -231,13 +231,13 @@ stages:
 #                if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $temporaryBranchName from $branchName failed." }
 #
 #                Write-Information "Creating artifacts folder..."
-#                $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
+#                $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.OUTPUT_FOLDER_PATH }}"
 #                if ((Test-Path -Path "$artifactFolderPath") -eq $false) {
 #                    New-Item -Path "$artifactFolderPath" -ItemType "Directory"
 #                }
 #
 #                Write-Information "Synchronizing artifacts..."
-#                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}
+#                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.OUTPUT_FOLDER_PATH }}
 #                if ("$(Agent.OS)" -like "*win*") {
 #                   & robocopy "$extractorArtifactsFolderPath" "$artifactFolderPath" /zb /mir /mt
 #                    if ($LASTEXITCODE -gt 7) { throw "Setting $artifactFolderPath to contents of $extractorArtifactsFolderPath failed." }
