@@ -35,7 +35,7 @@ stages:
 
           - task: UseNode@1
             inputs:
-              versionSpec: '18'
+              version: '18.x'
               checkLatest: true
 
           - script: |
