@@ -8,6 +8,7 @@ trigger:
     exclude:
     - tools/*
     - configuration.*.yaml
+    - README.md
 
 parameters:
   - name: API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH
