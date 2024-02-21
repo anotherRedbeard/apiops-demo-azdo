@@ -40,7 +40,7 @@ stages:
 
           - script: |
               npm install
-              node ./scripts.v3/capture --subscriptionId "$(AZURE_SUBSCRIPTION_ID)" --resourceGroupName "$(RESOURCE_GROUP_NAME)" --serviceName "$(APIM_INSTANCE_NAME)" --tenantId "$(AZURE_TENANT_ID)" --servicePrincipal "$(AZURE_CLIENT_ID)"  --servicePrincipalSecret "$(AZURE_CLIENT_SECRET)"  --folder "$(System.DefaultWorkingDirectory)/${{ parameters.OUTPUT_FOLDER_PATH }}/snapshot"
+              node ./scripts.v3/capture --subscriptionId "$(AZURE_SUBSCRIPTION_ID)" --resourceGroupName "$(RESOURCE_GROUP_NAME)" --serviceName "$(APIM_NAME)" --tenantId "$(AZURE_TENANT_ID)" --servicePrincipal "$(AZURE_CLIENT_ID)"  --servicePrincipalSecret "$(AZURE_CLIENT_SECRET)"  --folder "$(System.DefaultWorkingDirectory)/${{ parameters.OUTPUT_FOLDER_PATH }}/snapshot"
             displayName: 'Run Capture'
             env:
               AZURE_CLIENT_ID: $(AZURE_CLIENT_ID)
@@ -48,7 +48,7 @@ stages:
               AZURE_TENANT_ID: $(AZURE_TENANT_ID)
               AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
               RESOURCE_GROUP_NAME: $(RESOURCE_GROUP_NAME)
-              APIM_INSTANCE_NAME: $(APIM_NAME)
+              APIM_NAME: $(APIM_NAME)
 
           - task: PublishPipelineArtifact@1
             inputs:
