@@ -68,8 +68,8 @@ stages:
             displayName: Download pipeline artifact
             inputs:
               source: current
-              artifactName: artifacts-from-portal
-              targetPath: $(Pipeline.Workspace)/${{ parameters.OUTPUT_FOLDER_PATH }}
+              artifactName: artifacts-from-capture
+              targetPath: $(System.DefaultWorkingDirectory)/${{ parameters.OUTPUT_FOLDER_PATH }}
           - task: PowerShell@2
             displayName: Create pull request
             inputs:
