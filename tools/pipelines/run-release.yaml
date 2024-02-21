@@ -23,13 +23,16 @@ parameters:
 stages:
 - stage: release_dev
   displayName: 'Release to Dev'
-  pool:
-    vmImage: 'ubuntu-latest'
-  steps:
-  - template: ./run-release-with-env.yaml
-    parameters:
-      ENVIRONMENT: 'Dev'
-      OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
+  jobs:
+    - job: push_changes_to_Dev
+      displayName: 'Push changes to Dev'
+      pool:
+        vmImage: 'ubuntu-latest'
+      steps:
+      - template: ./run-release-with-env.yaml
+        parameters:
+          ENVIRONMENT: 'Dev'
+          OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
 
 - stage: release_prod
   displayName: 'Release to Prod'
