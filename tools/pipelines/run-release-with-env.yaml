@@ -1,19 +1,15 @@
-trigger: none
-
-pr: none
-
 parameters:
 - name: ENVIRONMENT
   type: string
   default: ''
   values:
-  - 'dev'
-  - 'test'
-  - 'prod'
+  - 'Dev'
+  - 'Test'
+  - 'Prod'
 
 - name: OUTPUT_FOLDER_PATH
   type: string
-  default: 'artifacts'
+  default: 'devportal-artifacts'
 
 jobs:
 - job: release-env
