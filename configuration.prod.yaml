@@ -42,7 +42,7 @@ diagnostics:
 apis:
   - name: "basic-calculator"
     properties:
-      server-url: "http://calcapi.cloudapp.net/api/from-config/"
+      serviceUrl: "http://calcapi.cloudapp.net/api/from-config/"
     diagnostics:
       - name: applicationinsights
         properties:
