@@ -21,7 +21,7 @@ parameters:
     default: devportal-artifacts
 
 jobs:
-- job: release-dev
+- job: release_dev
   displayName: 'Release to Dev'
   pool:
     vmImage: 'ubuntu-latest'
@@ -31,11 +31,12 @@ jobs:
       ENVIRONMENT: 'Dev'
       OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
 
-- job: release-stage
+- job: release_stage
   displayName: 'Release to Stage'
-  dependsOn: release-dev
+  dependsOn: release_dev
   pool:
     vmImage: 'ubuntu-latest'
+  environment: 'Prod'
   steps:
   - template: ./run-release-with-env.yaml
     parameters:
