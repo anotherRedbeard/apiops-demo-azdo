@@ -1,18 +1,17 @@
 parameters:
-- name: ENVIRONMENT
-  type: string
-  default: ''
-  values:
-  - 'Dev'
-  - 'Test'
-  - 'Prod'
+  - name: ENVIRONMENT
+    type: string
+    default: ''
+    values:
+      - 'Dev'
+      - 'Test'
+      - 'Prod'
 
-- name: OUTPUT_FOLDER_PATH
-  type: string
-  default: 'devportal-artifacts'
+  - name: OUTPUT_FOLDER_PATH
+    type: string
+    default: 'devportal-artifacts'
 
-  environment: ${{ parameters.ENVIRONMENT }}
-  steps:
+steps:
   - task: PowerShell@2
     displayName: 'Set Default Value'
     inputs:
