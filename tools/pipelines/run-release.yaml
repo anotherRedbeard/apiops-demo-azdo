@@ -1,20 +1,10 @@
-pr:
+trigger:
   branches:
     include:
       - main
   paths:
     include:
       - 'devportal-artifacts/**'
-  trigger:
-    branches:
-      include:
-        - main
-    paths:
-      include:
-        - 'devportal-artifacts/**'
-    event:
-      - closed
-    condition: and(succeeded(), eq(variables['Build.Reason'], 'PullRequest'))
 
 parameters:
   - name: OUTPUT_FOLDER_PATH
