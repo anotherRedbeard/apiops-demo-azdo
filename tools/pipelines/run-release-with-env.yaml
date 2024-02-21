@@ -17,8 +17,7 @@ steps:
     inputs:
       targetType: 'inline'
       script: |
-        $outputPath = "$(OUTPUT_FOLDER_PATH)"
-        echo "output_path=$outputPath" | Out-File $env:GITHUB_ENV -Append
+        $outputPath = "${{ parameters.OUTPUT_FOLDER_PATH }}"
 
   - checkout: self
 
