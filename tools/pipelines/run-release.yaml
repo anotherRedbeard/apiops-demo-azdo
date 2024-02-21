@@ -14,6 +14,12 @@ pr:
     include:
       - 'devportal-artifacts/**'
 
+parameters:
+  - name: OUTPUT_FOLDER_PATH
+    type: string
+    displayName: Folder where the artifacts reside
+    default: devportal-artifacts
+
 jobs:
 - job: release-dev
   displayName: 'Release to Dev'
