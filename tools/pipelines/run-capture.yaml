@@ -4,14 +4,6 @@ parameters:
     displayName: Output Folder Path
     type: string
     default: devportal-artifacts
-  - name: APIM_INSTANCE_NAME
-    displayName: APIM instance name
-    type: string
-    default: brd-apim-dev
-  - name: RESOURCE_GROUP_NAME
-    displayName: APIM instance resource group name
-    type: string
-    default: brd-scus-apiopsdemo-rg-dev
   - name: APIM_REPOSITORY_NAME
     type: string
     displayName: APIM repository for pull request
@@ -55,8 +47,8 @@ stages:
               AZURE_CLIENT_SECRET: $(AZURE_CLIENT_SECRET)
               AZURE_TENANT_ID: $(AZURE_TENANT_ID)
               AZURE_SUBSCRIPTION_ID: $(AZURE_SUBSCRIPTION_ID)
-              RESOURCE_GROUP_NAME: ${{ parameters.RESOURCE_GROUP_NAME }}
-              APIM_INSTANCE_NAME: ${{ parameters.APIM_INSTANCE_NAME }}
+              RESOURCE_GROUP_NAME: $(RESOURCE_GROUP_NAME)
+              APIM_INSTANCE_NAME: $(APIM_INSTANCE_NAME)
 
           - task: PublishPipelineArtifact@1
             inputs:
