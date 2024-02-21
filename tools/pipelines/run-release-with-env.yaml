@@ -11,50 +11,52 @@ parameters:
   type: string
   default: 'devportal-artifacts'
 
-jobs:
-- job: release-env
-  displayName: 'Release Environment'
-  pool:
-    vmImage: 'ubuntu-latest'
-  environment: ${{ parameters.ENVIRONMENT }}
-  steps:
-  - task: PowerShell@2
-    displayName: 'Set Default Value'
-    inputs:
-      targetType: 'inline'
-      script: |
-        $outputPath = "$(OUTPUT_FOLDER_PATH)"
-        echo "output_path=$outputPath" | Out-File $env:GITHUB_ENV -Append
+stages:
+- stage: ReleaseEnv
+  jobs:
+  - job: release-env
+    displayName: 'Release Environment'
+    pool:
+      vmImage: 'ubuntu-latest'
+    environment: ${{ parameters.ENVIRONMENT }}
+    steps:
+    - task: PowerShell@2
+      displayName: 'Set Default Value'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $outputPath = "$(OUTPUT_FOLDER_PATH)"
+          echo "output_path=$outputPath" | Out-File $env:GITHUB_ENV -Append
 
-  - checkout: self
+    - checkout: self
 
-  - task: UseNode@1
-    inputs:
-      versionSpec: '18'
-      checkLatest: true
+    - task: UseNode@1
+      inputs:
+        versionSpec: '18'
+        checkLatest: true
 
-  - task: PowerShell@2
-    displayName: 'Run Cleanup'
-    inputs:
-      targetType: 'inline'
-      script: |
-        npm install
-        node ./scripts.v3/cleanup --subscriptionId  "$(AZURE_SUBSCRIPTION_ID)" --resourceGroupName "$(RESOURCE_GROUP_NAME)" --serviceName "$(APIM_INSTANCE_NAME)" --tenantId "$(AZURE_TENANT_ID)" --servicePrincipal "$(AZURE_CLIENT_ID)"  --servicePrincipalSecret "$(AZURE_CLIENT_SECRET)"
+    - task: PowerShell@2
+      displayName: 'Run Cleanup'
+      inputs:
+        targetType: 'inline'
+        script: |
+          npm install
+          node ./scripts.v3/cleanup --subscriptionId  "$(AZURE_SUBSCRIPTION_ID)" --resourceGroupName "$(RESOURCE_GROUP_NAME)" --serviceName "$(APIM_INSTANCE_NAME)" --tenantId "$(AZURE_TENANT_ID)" --servicePrincipal "$(AZURE_CLIENT_ID)"  --servicePrincipalSecret "$(AZURE_CLIENT_SECRET)"
 
-  - task: PowerShell@2
-    displayName: 'Run Generate'
-    inputs:
-      targetType: 'inline'
-      script: |
-        node ./scripts.v3/generate --subscriptionId  "$(AZURE_SUBSCRIPTION_ID)" --resourceGroupName "$(RESOURCE_GROUP_NAME)" --serviceName "$(APIM_INSTANCE_NAME)" --tenantId "$(AZURE_TENANT_ID)" --servicePrincipal "$(AZURE_CLIENT_ID)"  --servicePrincipalSecret "$(AZURE_CLIENT_SECRET)"  --folder "$(System.DefaultWorkingDirectory)/$(OUTPUT_FOLDER_PATH)/snapshot"
+    - task: PowerShell@2
+      displayName: 'Run Generate'
+      inputs:
+        targetType: 'inline'
+        script: |
+          node ./scripts.v3/generate --subscriptionId  "$(AZURE_SUBSCRIPTION_ID)" --resourceGroupName "$(RESOURCE_GROUP_NAME)" --serviceName "$(APIM_INSTANCE_NAME)" --tenantId "$(AZURE_TENANT_ID)" --servicePrincipal "$(AZURE_CLIENT_ID)"  --servicePrincipalSecret "$(AZURE_CLIENT_SECRET)"  --folder "$(System.DefaultWorkingDirectory)/$(OUTPUT_FOLDER_PATH)/snapshot"
 
-  - task: PowerShell@2
-    displayName: 'Run Update Urls'
-    inputs:
-      targetType: 'inline'
-      script: |
-        $jsonLeft = (Get-Content "dev-portal/existingUrls.json" -Raw) | ConvertFrom-Json
-        $existingUrls = $jsonLeft.uri -replace ",\s*", ","
-        $jsonRight = (Get-Content "dev-portal/urls.$(ENVIRONMENT).json" -Raw) | ConvertFrom-Json
-        $targetUrls = $jsonRight.uri -replace ",\s*", ","
-        node ./scripts.v3/updatecontenturl --destSubscriptionId  "$(AZURE_SUBSCRIPTION_ID)"  --destResourceGroupName "$(RESOURCE_GROUP_NAME)" --destServiceName "$(APIM_INSTANCE_NAME)" --destTenantId "$(AZURE_TENANT_ID)" --destServicePrincipal "$(AZURE_CLIENT_ID)"  --destSecret "$(AZURE_CLIENT_SECRET)" --existingEnvUrls $existingUrls --destEnvUrls $targetUrls
+    - task: PowerShell@2
+      displayName: 'Run Update Urls'
+      inputs:
+        targetType: 'inline'
+        script: |
+          $jsonLeft = (Get-Content "dev-portal/existingUrls.json" -Raw) | ConvertFrom-Json
+          $existingUrls = $jsonLeft.uri -replace ",\s*", ","
+          $jsonRight = (Get-Content "dev-portal/urls.$(ENVIRONMENT).json" -Raw) | ConvertFrom-Json
+          $targetUrls = $jsonRight.uri -replace ",\s*", ","
+          node ./scripts.v3/updatecontenturl --destSubscriptionId  "$(AZURE_SUBSCRIPTION_ID)"  --destResourceGroupName "$(RESOURCE_GROUP_NAME)" --destServiceName "$(APIM_INSTANCE_NAME)" --destTenantId "$(AZURE_TENANT_ID)" --destServicePrincipal "$(AZURE_CLIENT_ID)"  --destSecret "$(AZURE_CLIENT_SECRET)" --existingEnvUrls $existingUrls --destEnvUrls $targetUrls
