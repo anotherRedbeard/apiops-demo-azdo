@@ -39,7 +39,6 @@ stages:
   jobs:
     - deployment: push_changes_to_Prod
       displayName: 'Push changes to Prod'
-      dependsOn: release_dev
       pool:
         vmImage: 'ubuntu-latest'
       environment: 'Prod'
