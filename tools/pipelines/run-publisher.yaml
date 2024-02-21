@@ -9,6 +9,7 @@ trigger:
     - tools/*
     - configuration.*.yaml
     - README.md
+    - devportal-artifacts/**
 
 parameters:
   - name: API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH
