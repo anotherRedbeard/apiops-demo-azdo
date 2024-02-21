@@ -20,6 +20,11 @@ parameters:
     displayName: Folder where the artifacts reside
     default: devportal-artifacts
 
+variables:
+  - group: apim-automation
+  - name: System.Debug
+    value: true
+
 stages:
 - stage: release_dev
   displayName: 'Release to Dev'
