@@ -48,6 +48,6 @@ steps:
       script: |
         $jsonLeft = (Get-Content "dev-portal/existingUrls.json" -Raw) | ConvertFrom-Json
         $existingUrls = $jsonLeft.uri -replace ",\s*", ","
-        $jsonRight = (Get-Content "dev-portal/urls.${{ parameters.ENVIRONMENT }}.json" -Raw) | ConvertFrom-Json
+        $jsonRight = (Get-Content "dev-portal/urls.$($parameters.ENVIRONMENT.ToLower()).json" -Raw) | ConvertFrom-Json
         $targetUrls = $jsonRight.uri -replace ",\s*", ","
         node ./scripts.v3/updatecontenturl --destSubscriptionId  "$(AZURE_SUBSCRIPTION_ID)"  --destResourceGroupName "$(RESOURCE_GROUP_NAME)" --destServiceName "$(APIM_NAME)" --destTenantId "$(AZURE_TENANT_ID)" --destServicePrincipal "$(AZURE_CLIENT_ID)"  --destSecret "$(AZURE_CLIENT_SECRET)" --existingEnvUrls $existingUrls --destEnvUrls $targetUrls
