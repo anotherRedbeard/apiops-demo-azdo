@@ -209,6 +209,7 @@ stages:
                 }
 
                 Write-Information "Synchronizing artifacts..."
+                Get-ChildItem $(Pipeline.Workspace)
                 $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}
                 if ("$(Agent.OS)" -like "*win*") {
                     & robocopy "$extractorArtifactsFolderPath" "$artifactFolderPath" /zb /mir /mt
