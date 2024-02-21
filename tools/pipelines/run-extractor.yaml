@@ -152,6 +152,8 @@ stages:
               targetPath: "$(Build.ArtifactStagingDirectory)"
               artifactType: pipeline
               artifactName: artifacts-from-portal
+
+  # github create PR, you will need to create a GITHUB_OWNER and GITHUB_PAT variable in the pipeline to connect to repo            
   - stage: create_template_branch
     displayName: Create template branch
     jobs:
@@ -271,3 +273,108 @@ stages:
                 Write-Information "Execution complete."
 
               pwsh: true
+  
+  # azure devops create PR
+#  - stage: create_template_branch
+#    displayName: Create template branch
+#    jobs:
+#      - job: create_artifacts_pull_request
+#        displayName: Create artifacts pull request
+#        pool:
+#          vmImage: windows-latest
+#        steps:
+#          - task: DownloadPipelineArtifact@2
+#            displayName: Download pipeline artifact
+#            inputs:
+#              source: current
+#              artifactName: artifacts-from-portal
+#              targetPath: $(Pipeline.Workspace)/artifacts-from-portal
+#          - task: PowerShell@2
+#            displayName: Create pull request
+#            inputs:
+#              targetType: "inline"
+#              script: |
+#                Set-StrictMode -Version Latest
+#                $ErrorActionPreference = "Stop"
+#                $VerbosePreference = "Continue"
+#                $InformationPreference = "Continue"
+#
+#                Write-Information "Installing Azure DevOps extension..."
+#                az extension add --name "azure-devops"
+#                az devops configure --defaults organization="$(System.TeamFoundationCollectionUri)" project="$(System.TeamProject)"
+#
+#                Write-Information "Creating temporary folder..."
+#                $temporaryFolderPath = Join-Path "$(Agent.TempDirectory)" "artifacts-from-portal"
+#                New-Item -Path "$temporaryFolderPath" -ItemType "Directory"
+#
+#                $branchName = "${{ parameters.TARGET_BRANCH_NAME }}"
+#                $temporaryBranchName = "artifacts-from-portal-build-$(Build.BuildId)"
+#                $repositoryName = "${{ parameters.APIM_REPOSITORY_NAME }}"
+#                Write-Information "Cloning branch $branchName in repository $repositoryName..."
+#                $cloneUrl = az repos show --repository "$repositoryName" --query "remoteUrl" --output tsv
+#                Write-Information "Clone URL is $cloneUrl"
+#                git -c http.extraheader="AUTHORIZATION: Bearer $(System.AccessToken)" clone --branch "$branchName" --depth 1 "$cloneUrl" "$temporaryFolderPath"
+#                if ($LASTEXITCODE -ne 0) { throw "Cloning branch $branchName in repository $repositoryName failed." }
+#
+#                Write-Information "Creating temporary branch $temporaryBranchName from $branchName..."
+#                git -C "$temporaryFolderPath" checkout -b "$temporaryBranchName" "$branchName"
+#                if ($LASTEXITCODE -ne 0) { throw "Creating temporary branch $temporaryBranchName from $branchName failed." }
+#
+#                Write-Information "Creating artifacts folder..."
+#                $artifactFolderPath = Join-Path "$temporaryFolderPath" "${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}"
+#                if ((Test-Path -Path "$artifactFolderPath") -eq $false) {
+#                    New-Item -Path "$artifactFolderPath" -ItemType "Directory"
+#                }
+#
+#                Write-Information "Synchronizing artifacts..."
+#                $extractorArtifactsFolderPath = Join-Path "$(Pipeline.Workspace)" "artifacts-from-portal" ${{ parameters.API_MANAGEMENT_SERVICE_OUTPUT_FOLDER_PATH }}
+#                if ("$(Agent.OS)" -like "*win*") {
+#                   & robocopy "$extractorArtifactsFolderPath" "$artifactFolderPath" /zb /mir /mt
+#                    if ($LASTEXITCODE -gt 7) { throw "Setting $artifactFolderPath to contents of $extractorArtifactsFolderPath failed." }
+#                }
+#                else {
+#                    & rsync --verbose --archive --delete --force --recursive "$extractorArtifactsFolderPath/" "$artifactFolderPath/"
+#                    if ($LASTEXITCODE -ne 0) { throw "Setting $artifactFolderPath to contents of $extractorArtifactsFolderPath failed." }
+#                }
+#
+#                Write-Information "Validating that changes exist to be published..."
+#                $gitStatus = git -C "$temporaryFolderPath" status --porcelain
+#                if ($LASTEXITCODE -ne 0) { throw "Getting git status failed." }
+#                if ([string]::IsNullOrWhiteSpace($gitStatus)) {
+#                    Write-Information "No changes exist to be published."
+#                    return
+#                }
+#               
+#                Write-Information "Setting git user information..."
+#                git config --global user.email "azuredevopsagent@azuredevops.com"
+#                git config --global user.name "Azure Devops agent"
+#
+#                Write-Information "Adding changes..."
+#                git -C "$temporaryFolderPath" add --all
+#                if ($LASTEXITCODE -ne 0) { throw "Adding Git changes failed." }
+#
+#                Write-Information "Committing changes"
+#                $commitOutput = git -C "$temporaryFolderPath" commit --message "Initial commit"
+#                if ($LASTEXITCODE -ne 0) { 
+#                  if ($commitOutput.Contains("nothing to commit, working tree clean")) {
+#                    Write-Information "No changes exist to be published."
+#                    return
+#                  }
+#                  throw "Committing Git changes failed." 
+#                }
+#
+#                Write-Information "Pushing changes"
+#                git -C "$temporaryFolderPath" -c http.extraheader="AUTHORIZATION: Bearer $(System.AccessToken)" push --set-upstream origin "$temporaryBranchName"
+#                if ($LASTEXITCODE -ne 0) { throw "Pushing Git changes failed." }
+#
+#                Write-Information "Creating pull request..."
+#                az repos pr create --source-branch "$temporaryBranchName" --target-branch "$branchName" --title "Merging artifacts from portal (Build $(Build.BuildId))" --squash --delete-source-branch "true" --repository "$repositoryName"
+#                if ($LASTEXITCODE -ne 0) { throw "Creating pull request failed." }
+#
+#                Write-Information "Deleting temporary folder contents..."
+#                Remove-Item -Path "$temporaryFolderPath" -Recurse -Force
+#
+#                Write-Information "Execution complete."
+#              pwsh: true
+#            env:
+#              AZURE_DEVOPS_EXT_PAT: "$(System.AccessToken)"
