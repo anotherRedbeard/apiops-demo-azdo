@@ -11,8 +11,7 @@ parameters:
   type: string
   default: 'devportal-artifacts'
 
-jobs:
-- job: release-env
+job: 
   displayName: 'Release Environment'
   pool:
     vmImage: 'ubuntu-latest'
