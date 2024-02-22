@@ -32,6 +32,8 @@ stages:
         parameters:
           ENVIRONMENT: 'Dev'
           OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
+          RESOURCE_GROUP_NAME: '$(DEV_PORTAL_RG_BASE_NAME)-dev'
+          APIM_NAME: '$(DEV_PORTAL_APIM_BASE_NAME)-dev'
 
 - stage: release_prod
   displayName: 'Release to Prod'
@@ -50,3 +52,5 @@ stages:
               parameters:
                 ENVIRONMENT: 'Prod'
                 OUTPUT_FOLDER_PATH: ${{ parameters.OUTPUT_FOLDER_PATH }}
+                RESOURCE_GROUP_NAME: '$(DEV_PORTAL_RG_BASE_NAME)-prd'
+                APIM_NAME: '$(DEV_PORTAL_APIM_BASE_NAME)-prd'
