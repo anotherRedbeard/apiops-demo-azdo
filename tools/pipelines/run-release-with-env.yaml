@@ -31,7 +31,7 @@ steps:
       checkLatest: true
 
   - task: PowerShell@2
-    condition: ne('${{ parameters.ENVIRONMENT }}'', 'Dev')
+    condition: ne('${{ parameters.ENVIRONMENT }}', 'Dev')
     displayName: 'Run Cleanup'
     inputs:
       targetType: 'inline'
