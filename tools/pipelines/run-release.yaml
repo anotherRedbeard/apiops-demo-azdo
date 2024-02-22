@@ -1,4 +1,6 @@
-pr:
+pr: none
+
+trigger:
   branches:
     include:
       - main
@@ -23,11 +25,6 @@ stages:
   jobs:
     - job: push_changes_to_Dev
       displayName: 'Push changes to Dev'
-      condition: |
-        and(
-          eq(variables['Build.Reason'], 'PullRequest'),
-          in(variables['System.PullRequest.PullRequestStatus'], 'completed', 'succeeded')
-        )
       pool:
         vmImage: 'ubuntu-latest'
       steps:
@@ -41,11 +38,6 @@ stages:
   jobs:
     - deployment: push_changes_to_Prod
       displayName: 'Push changes to Prod'
-      condition: |
-        and(
-          eq(variables['Build.Reason'], 'PullRequest'),
-          in(variables['System.PullRequest.PullRequestStatus'], 'completed', 'succeeded')
-        )
       pool:
         vmImage: 'ubuntu-latest'
       environment: 'Prod'
